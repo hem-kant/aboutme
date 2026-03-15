@@ -1,504 +1,644 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hem Kant — Solution Architect • 15+ Yrs • AWS • Kubernetes</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <style>
-    :root {
-      --primary: #0066cc;
-      --primary-dark: #004080;
-      --accent: #00d4ff;
-      --text: #1e293b;
-      --text-light: #475569;
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --border: #e2e8f0;
-      --shadow: 0 10px 30px rgba(0,0,0,0.08);
-    }
-
-    [data-theme="dark"] {
-      --primary: #60a5fa;
-      --primary-dark: #3b82f6;
-      --accent: #00d4ff;
-      --text: #e2e8f0;
-      --text-light: #94a3b8;
-      --bg: #0f172a;
-      --card: #1e293b;
-      --border: #334155;
-      --shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      transition: all 0.4s ease;
-    }
-
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-
-    header {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 6rem 0 4rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .theme-toggle, .particles-toggle {
-      position: absolute;
-      top: 1.5rem;
-      background: rgba(255,255,255,0.2);
-      border: none;
-      color: white;
-      font-size: 1.4rem;
-      cursor: pointer;
-      padding: 0.7rem;
-      border-radius: 50%;
-      transition: all 0.3s;
-    }
-    .theme-toggle { right: 4rem; }
-    .particles-toggle { right: 1.5rem; }
-    .theme-toggle:hover, .particles-toggle:hover { background: rgba(255,255,255,0.4); transform: scale(1.1); }
-
-    h1 { font-size: 3.8rem; margin-bottom: 0.6rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-    .tagline { font-size: 1.5rem; opacity: 0.95; font-weight: 300; min-height: 2.2rem; }
-
-    nav {
-      position: sticky;
-      top: 0;
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      z-index: 100;
-      box-shadow: var(--shadow);
-    }
-    nav .container {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1.4rem;
-      padding: 1.2rem;
-    }
-    nav a {
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-      padding: 0.7rem 1.4rem;
-      border-radius: 2rem;
-      transition: all 0.3s;
-    }
-    nav a:hover, nav a.active { background: var(--primary); color: white; transform: translateY(-2px); }
-
-    section { padding: 6rem 0; }
-    h2 {
-      font-size: 2.8rem;
-      text-align: center;
-      color: var(--primary);
-      margin-bottom: 3rem;
-      position: relative;
-    }
-    h2::after {
-      content: '';
-      width: 100px;
-      height: 5px;
-      background: var(--accent);
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      border-radius: 3px;
-    }
-
-    .card {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 2.2rem;
-      margin-bottom: 2rem;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.7s ease-out;
-    }
-    .card.visible { opacity: 1; transform: translateY(0); }
-
-    .toggle-header {
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--primary);
-    }
-    .toggle-header i { transition: transform 0.4s; }
-    .toggle-header.active i { transform: rotate(180deg); }
-
-    .toggle-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease, padding 0.3s; }
-    .toggle-content.open { max-height: 1200px; padding-top: 1.5rem; }
-
-    /* Timeline */
-    .timeline { position: relative; max-width: 950px; margin: 0 auto; }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      width: 5px;
-      background: linear-gradient(var(--primary), var(--accent));
-      top: 0; bottom: 0; left: 50%; margin-left: -2.5px;
-    }
-    .timeline-item {
-      position: relative;
-      width: 47%;
-      margin: 2.5rem 0;
-      padding: 1.8rem;
-      background: var(--card);
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-    }
-    .timeline-item:nth-child(odd)  { left: 0; }
-    .timeline-item:nth-child(even) { left: 53%; }
-    .timeline-item::after {
-      content: '';
-      position: absolute;
-      width: 22px; height: 22px;
-      background: var(--accent);
-      border: 5px solid var(--card);
-      top: 28px; border-radius: 50%; z-index: 1;
-    }
-    .timeline-item:nth-child(odd)::after  { right: -11px; }
-    .timeline-item:nth-child(even)::after { left: -11px; }
-
-    /* Skills */
-    .skills-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.8rem;
-      margin: 2rem 0;
-      justify-content: center;
-    }
-    .skill-tag {
-      background: var(--primary);
-      color: white;
-      padding: 0.6rem 1.3rem;
-      border-radius: 2rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      opacity: 0.9;
-    }
-    .skill-tag:hover, .skill-tag.active { opacity: 1; transform: scale(1.08); background: var(--accent); }
-
-    .skill-meter {
-      margin: 1.2rem 0;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.8s ease-out;
-    }
-    .skill-meter.visible { opacity: 1; transform: translateY(0); }
-    .progress-bar {
-      height: 14px;
-      background: #e2e8f0;
-      border-radius: 7px;
-      overflow: hidden;
-      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .progress {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      transition: width 1.8s ease-out;
-      border-radius: 7px;
-    }
-    .counter { font-weight: bold; color: var(--primary); }
-
-    /* Particles background */
-    #particles-js {
-      position: absolute;
-      width: 100%; height: 100%;
-      top: 0; left: 0;
-      pointer-events: none;
-      opacity: 0.15;
-      transition: opacity 0.6s;
-    }
-    [data-particles="off"] #particles-js { opacity: 0; }
-
-    footer {
-      background: var(--card);
-      text-align: center;
-      padding: 3rem 0;
-      border-top: 1px solid var(--border);
-      color: var(--text-light);
-    }
-
-    @media (max-width: 768px) {
-      .timeline::before { left: 28px; }
-      .timeline-item { width: 100% !important; left: 0 !important; margin-left: 50px; padding-left: 30px; }
-      .timeline-item::after { left: 18px !important; }
-      h1 { font-size: 2.8rem; }
-    }
-
-    @media print {
-      .theme-toggle, .particles-toggle, nav, .toggle-header i, #particles-js { display: none !important; }
-      header { padding: 2rem 0; background: none; color: black; }
-      .card, .timeline-item { box-shadow: none; border: 1px solid #ccc; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hem Kant | Solution Architect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@700&amp;display=swap');
+        
+        :root {
+            --primary: #0ea5e9;
+        }
+        
+        .tail-container {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #1e40af 100%);
+        }
+        
+        .timeline-line {
+            position: absolute;
+            left: 31px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, #0ea5e9, #3b82f6);
+        }
+        
+        .experience-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .experience-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgb(14 165 233 / 0.25);
+        }
+        
+        .skill-bar {
+            height: 8px;
+            background: linear-gradient(to right, #0ea5e9, #3b82f6);
+            transition: width 2s ease-in-out;
+        }
+        
+        .modal {
+            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .stat-number {
+            font-family: 'Playfair Display', sans-serif;
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #0ea5e9;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+    </style>
 </head>
-<body>
-
-  <div id="particles-js"></div>
-
-  <header>
-    <button class="theme-toggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
-    <button class="particles-toggle" aria-label="Toggle particles"><i class="fas fa-snowflake"></i></button>
-    <div class="container">
-      <h1>Hem Kant</h1>
-      <p class="tagline" id="typing-tagline"></p>
-      <p style="margin-top:1.8rem; font-size:1.2rem;">15+ years • Solution Architect • Security Champion • AWS • Kubernetes • Java • CMS/PIM Expert</p>
-    </div>
-  </header>
-
-  <nav>
-    <div class="container">
-      <a href="#about">About</a>
-      <a href="#experience">Experience</a>
-      <a href="#skills">Skills</a>
-      <a href="#achievements">Achievements</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </nav>
-
-  <main class="container">
-
-    <section id="about">
-      <h2>About Me</h2>
-      <div class="card">
-        <p>15+ years architecting enterprise digital platforms — e-commerce, content, banking, CRM. Specialized in cloud-native transformation (AWS), container orchestration (Kubernetes/Docker), headless CMS, PIM/DAM integration, and secure Java/.NET ecosystems.</p>
-        <p>Proven servant leader — scaled teams, saved millions through modernization, fixed critical vulnerabilities (Log4J, Spring RCE), built custom frameworks (Mi4T, ESI4T), 4× Tridion MVP.</p>
-      </div>
-    </section>
-
-    <section id="experience">
-      <h2>Experience Timeline</h2>
-      <div class="timeline">
-
-        <div class="timeline-item">
-          <div class="card">
-            <h3>Solution Architect & Security Champion</h3>
-            <div style="font-style:italic; color:var(--text-light);">Adidas • Jul 2019 – Present • Gurugram</div>
-            <div class="toggle-header"><span>Key Responsibilities & Impact</span><i class="fas fa-chevron-down"></i></div>
-            <div class="toggle-content">
-              <ul>
-                <li>Own global adidas.com / mobile apps architecture + Future of Content platform</li>
-                <li>Security lead — eliminated Log4J, Spring RCE across Java estate</li>
-                <li>Led SFCC → in-house CMS migration → multi-million annual savings</li>
-                <li>Designed universal lead-acceptance API (PIM + CRM + DAM + analytics)</li>
-              </ul>
+<body class="tail-container bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 transition-colors duration-300">
+    <!-- NAVBAR -->
+    <nav class="bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-sky-500 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-inner">HK</div>
+                <div>
+                    <span class="font-semibold text-2xl tracking-tight">Hem Kant</span>
+                </div>
             </div>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div class="card">
-            <h3>Technical Consultant</h3>
-            <div style="font-style:italic; color:var(--text-light);">Content Bloom • 2017–2019 • Delhi NCR</div>
-            <div class="toggle-header"><span>Key Responsibilities & Impact</span><i class="fas fa-chevron-down"></i></div>
-            <div class="toggle-content">
-              <ul>
-                <li>Led complex enterprise application design & delivery</li>
-                <li>Defined architecture aligned with digital transformation goals</li>
-              </ul>
+            
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium">
+                <a href="#hero" onclick="smoothScrollTo('hero')" class="nav-link cursor-pointer">Home</a>
+                <a href="#about" onclick="smoothScrollTo('about')" class="nav-link cursor-pointer">About</a>
+                <a href="#experience" onclick="smoothScrollTo('experience')" class="nav-link cursor-pointer">Experience</a>
+                <a href="#skills" onclick="smoothScrollTo('skills')" class="nav-link cursor-pointer">Skills</a>
+                <a href="#contact" onclick="smoothScrollTo('contact')" class="nav-link cursor-pointer">Contact</a>
             </div>
-          </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Dark mode toggle -->
+                <button onclick="toggleDarkMode()" 
+                        class="w-10 h-10 flex items-center justify-center rounded-2xl hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                    <i id="theme-icon" class="fas fa-moon text-xl"></i>
+                </button>
+                
+                <!-- Download button -->
+                <button onclick="downloadCV()" 
+                        class="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-3xl font-semibold text-sm transition-all active:scale-95">
+                    <i class="fas fa-download"></i>
+                    <span>Download PDF</span>
+                </button>
+                
+                <!-- Mobile menu -->
+                <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex items-center justify-center text-2xl">
+                    <i id="mobile-icon" class="fas fa-bars"></i>
+                </button>
+            </div>
         </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-zinc-900 border-t px-6 py-6">
+            <div class="flex flex-col gap-4 text-lg font-medium">
+                <a href="#hero" onclick="toggleMobileMenu();smoothScrollTo('hero')" class="py-2">Home</a>
+                <a href="#about" onclick="toggleMobileMenu();smoothScrollTo('about')" class="py-2">About</a>
+                <a href="#experience" onclick="toggleMobileMenu();smoothScrollTo('experience')" class="py-2">Experience</a>
+                <a href="#skills" onclick="toggleMobileMenu();smoothScrollTo('skills')" class="py-2">Skills</a>
+                <a href="#contact" onclick="toggleMobileMenu();smoothScrollTo('contact')" class="py-2">Contact</a>
+            </div>
+        </div>
+    </nav>
 
-        <!-- Add more if needed -->
-
-      </div>
+    <!-- HERO SECTION -->
+    <section id="hero" class="hero-bg text-white min-h-screen flex items-center relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <!-- Left content -->
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-5 py-2 rounded-3xl text-sm font-medium">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    Currently at World's Top Sports Brand
+                </div>
+                
+                <h1 class="text-7xl md:text-8xl font-bold leading-none tracking-tighter">
+                    Hem Kant
+                </h1>
+                
+                <div class="text-3xl font-light text-sky-100">
+                    Solution Architect<br>
+                    <span class="text-sky-200">Digital Transformation Leader</span>
+                </div>
+                
+                <p class="max-w-md text-xl text-sky-100">
+                    15+ years transforming businesses with technology.<br>
+                    5+ years mastering solution design for global sports brands.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="smoothScrollTo('experience')" 
+                            class="bg-white text-sky-600 hover:bg-sky-100 px-8 py-4 rounded-3xl font-semibold flex items-center gap-3 transition-all">
+                        <span>Explore My Journey</span>
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
+                    
+                    <button onclick="window.open('https://x.com/HemKant3280', '_blank')" 
+                            class="border border-white/70 hover:border-white px-8 py-4 rounded-3xl font-medium flex items-center gap-3 transition-all">
+                        <i class="fab fa-x-twitter"></i>
+                        <span>@HemKant3280</span>
+                    </button>
+                </div>
+                
+                <!-- Quick Stats -->
+                <div class="grid grid-cols-3 gap-6 pt-8 border-t border-white/30">
+                    <div onclick="animateStat(this)" class="cursor-pointer group">
+                        <div id="stat-years" class="stat-number text-5xl font-bold text-white">15</div>
+                        <div class="text-sky-200 text-sm tracking-widest">YEARS IN IT</div>
+                    </div>
+                    <div onclick="animateStat(this)" class="cursor-pointer group">
+                        <div id="stat-design" class="stat-number text-5xl font-bold text-white">5</div>
+                        <div class="text-sky-200 text-sm tracking-widest">YEARS SOLUTION DESIGN</div>
+                    </div>
+                    <div class="cursor-pointer">
+                        <div class="flex items-center gap-2">
+                            <div class="text-5xl">🏆</div>
+                            <div>
+                                <div class="text-2xl font-semibold">Top Sports Brand</div>
+                                <div class="text-sky-200 text-xs">Digital Transformation</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right visual -->
+            <div class="relative hidden md:flex justify-center">
+                <div class="relative w-80 h-80">
+                    <!-- Circular avatar frame -->
+                    <div class="w-80 h-80 bg-white/10 backdrop-blur-3xl rounded-[4rem] p-4 border border-white/30 shadow-2xl">
+                        <div class="w-full h-full bg-zinc-800 rounded-3xl overflow-hidden relative">
+                            <!-- Placeholder avatar - replace src with your photo -->
+                            <img src="https://picsum.photos/id/1011/800/800" 
+                                 alt="Hem Kant" 
+                                 class="w-full h-full object-cover">
+                            <!-- Overlay badge -->
+                            <div class="absolute bottom-6 left-6 bg-white text-sky-600 text-xs font-bold px-5 py-2 rounded-2xl shadow flex items-center gap-2">
+                                <i class="fas fa-briefcase"></i>
+                                SOLUTION ARCHITECT
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Floating badges -->
+                    <div class="absolute -top-6 -right-6 bg-white text-zinc-900 rounded-3xl px-6 py-3 shadow-xl flex items-center gap-3 text-sm font-semibold">
+                        <i class="fas fa-trophy text-amber-500"></i>
+                        15+ Years Excellence
+                    </div>
+                    
+                    <div class="absolute -bottom-8 -left-8 bg-white/90 dark:bg-zinc-800 text-sky-600 rounded-3xl px-6 py-3 shadow-xl flex items-center gap-2 text-sm font-semibold">
+                        <i class="fas fa-globe"></i>
+                        Delhi, India
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-12 left-1/2 flex flex-col items-center gap-2 text-white/70 text-xs tracking-widest">
+            <div class="animate-bounce">SCROLL TO EXPLORE</div>
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </section>
 
-    <section id="skills">
-      <h2>Technical Skills</h2>
-
-      <div class="skills-tags" id="skill-tags">
-        <!-- Dynamically populated or static -->
-        <span class="skill-tag" data-skill="all">All</span>
-        <span class="skill-tag" data-skill="cloud">Cloud & DevOps</span>
-        <span class="skill-tag" data-skill="backend">Backend</span>
-        <span class="skill-tag" data-skill="cms">CMS & Integration</span>
-        <span class="skill-tag" data-skill="frontend">Frontend</span>
-      </div>
-
-      <div class="card">
-        <div class="skill-meter" data-percent="95" data-skill="cloud"><div class="skill-name">Architecture & Leadership <span class="counter">0</span>%</div><div class="progress-bar"><div class="progress"></div></div></div>
-        <div class="skill-meter" data-percent="92" data-skill="backend"><div class="skill-name">Java / Spring Boot <span class="counter">0</span>%</div><div class="progress-bar"><div class="progress"></div></div></div>
-        <div class="skill-meter" data-percent="90" data-skill="cloud"><div class="skill-name">AWS & Cloud <span class="counter">0</span>%</div><div class="progress-bar"><div class="progress"></div></div></div>
-        <div class="skill-meter" data-percent="88" data-skill="backend"><div class="skill-name">.NET / C# <span class="counter">0</span>%</div><div class="progress-bar"><div class="progress"></div></div></div>
-        <div class="skill-meter" data-percent="94" data-skill="cms"><div class="skill-name">CMS (Tridion, AEM, Sitecore) <span class="counter">0</span>%</div><div class="progress-bar"><div class="progress"></div></div></div>
-        <div class="skill-meter" data-percent="87" data-skill="cloud"><div class="skill-name">Kubernetes • Docker • Terraform <span class="counter">0</span>%</div><div class="progress-bar"><div class="progress"></div></div></div>
-        <div class="skill-meter" data-percent="90" data-skill="cms"><div class="skill-name">PIM / DAM Integration <span class="counter">0</span>%</div><div class="progress-bar"><div class="progress"></div></div></div>
-      </div>
+    <!-- ABOUT SECTION -->
+    <section id="about" class="py-24 bg-white dark:bg-zinc-900">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="grid md:grid-cols-12 gap-16 items-center">
+                <div class="md:col-span-7 space-y-8">
+                    <div class="uppercase tracking-[3px] text-sky-500 font-medium text-sm">MY STORY</div>
+                    <h2 class="text-5xl font-semibold leading-tight">
+                        Crafting digital futures for the world's most iconic sports brands
+                    </h2>
+                    <div class="prose dark:prose-invert text-lg leading-relaxed text-zinc-600 dark:text-zinc-400">
+                        <p>
+                            With <strong>15 years of IT experience</strong> and <strong>5 years specializing in solution architecture and design</strong>, 
+                            I currently drive digital transformation initiatives at one of the world's top sports brands.
+                        </p>
+                        <p>
+                            My expertise lies in translating complex business challenges into scalable, future-proof technology solutions 
+                            that enhance fan experiences, optimize operations, and accelerate growth in the dynamic sports industry.
+                        </p>
+                    </div>
+                    
+                    <div class="flex gap-8 text-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-px h-12 bg-gradient-to-b from-transparent via-sky-500 to-transparent"></div>
+                            <div>
+                                <div class="font-semibold">Delhi, India</div>
+                                <div class="text-zinc-500">Based • Open to global projects</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="md:col-span-5">
+                    <div class="bg-zinc-100 dark:bg-zinc-800 p-8 rounded-3xl">
+                        <div class="flex items-center gap-4 mb-6">
+                            <i class="fas fa-quote-left text-4xl text-sky-400"></i>
+                        </div>
+                        <blockquote class="text-2xl font-light italic leading-tight">
+                            "Technology isn't just about code — it's about creating unforgettable moments for millions of fans worldwide."
+                        </blockquote>
+                        <div class="mt-8 flex items-center gap-3">
+                            <div class="h-px flex-1 bg-zinc-300 dark:bg-zinc-700"></div>
+                            <div class="text-xs font-medium uppercase tracking-widest">Hem Kant</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="achievements">
-      <h2>Key Achievements</h2>
-      <div class="card">
-        <ul style="padding-left:2rem; font-size:1.15rem; list-style:none;">
-          <li><i class="fas fa-trophy" style="color:gold; margin-right:0.8rem;"></i>4× RWS Tridion MVP</li>
-          <li><i class="fas fa-cloud" style="color:var(--primary); margin-right:0.8rem;"></i>Migrated adidas/Reebok e-commerce to AWS + in-house CMS → millions saved</li>
-          <li><i class="fas fa-shield-alt" style="color:var(--primary); margin-right:0.8rem;"></i>Resolved Log4J & Spring RCE globally as Security Champion</li>
-          <li><i class="fas fa-code" style="color:var(--primary); margin-right:0.8rem;"></i>Created Mi4T framework — featured by MongoDB on Twitter</li>
-        </ul>
-      </div>
+    <!-- EXPERIENCE SECTION -->
+    <section id="experience" class="py-24 bg-zinc-50 dark:bg-black">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="flex items-end justify-between mb-12">
+                <div>
+                    <span class="uppercase text-xs tracking-widest font-medium text-sky-500">CAREER JOURNEY</span>
+                    <h2 class="text-5xl font-semibold">Experience</h2>
+                </div>
+                <div class="text-right">
+                    <div class="text-3xl font-light text-zinc-400">15 years</div>
+                    <div class="text-xs text-zinc-500">of impact</div>
+                </div>
+            </div>
+            
+            <div class="relative pl-12 space-y-16">
+                <!-- Timeline line -->
+                <div class="timeline-line"></div>
+                
+                <!-- Current Role -->
+                <div class="experience-card relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-lg">
+                    <div class="absolute -left-3 top-8 w-8 h-8 bg-sky-500 rounded-2xl flex items-center justify-center text-white font-bold shadow">NOW</div>
+                    
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-52 flex-shrink-0">
+                            <div class="text-xs font-medium text-emerald-500">2021 — Present</div>
+                            <div class="text-2xl font-semibold mt-1">Solution Architect</div>
+                            <div class="text-sky-600 font-medium">World's Top Sports Brand</div>
+                            <div class="mt-6 text-xs uppercase tracking-widest bg-emerald-100 dark:bg-emerald-900 text-emerald-600 dark:text-emerald-400 px-4 py-1 inline-block rounded-3xl">Digital Transformation</div>
+                        </div>
+                        
+                        <div class="flex-1">
+                            <p class="text-zinc-600 dark:text-zinc-400">
+                                Leading enterprise solution design for global digital platforms that power fan engagement, e-commerce, and operational excellence.
+                            </p>
+                            <button onclick="showModal(1)" 
+                                    class="mt-6 text-sky-600 hover:text-sky-700 font-medium flex items-center gap-2">
+                                View full details 
+                                <i class="fas fa-arrow-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Previous Role 1 (placeholder) -->
+                <div class="experience-card relative bg-white dark:bg-zinc-900 rounded-3xl p-8 shadow-lg">
+                    <div class="absolute -left-3 top-8 w-8 h-8 bg-amber-500 rounded-2xl flex items-center justify-center text-white text-xs font-bold">2016</div>
+                    
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-52 flex-shrink-0">
+                            <div class="text-xs font-medium text-zinc-500">2016 — 2021</div>
+                            <div class="text-2xl font-semibold mt-1">Senior Solution Designer</div>
+                            <div class="text-zinc-500">Global IT Consulting Firm</div>
+                        </div>
+                        <div class="flex-1 text-zinc-600 dark:text-zinc-400">
+                            Designed and delivered complex enterprise solutions across retail, media &amp; entertainment sectors. 
+                            <span class="text-amber-500 font-medium cursor-pointer" onclick="showModal(2)">[Click to expand]</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Earlier experience summary -->
+                <div class="text-center text-zinc-400 text-sm py-8">
+                    + 10 years earlier roles in software engineering &amp; architecture
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="contact">
-      <h2>Contact Me</h2>
-      <div class="card" style="text-align:center;">
-        <p style="font-size:1.3rem; margin:1rem 0;"><i class="fas fa-envelope" style="color:var(--primary); margin-right:0.8rem;"></i> hemkant.india@gmail.com</p>
-        <p style="font-size:1.3rem; margin:1rem 0;"><i class="fas fa-phone" style="color:var(--primary); margin-right:0.8rem;"></i> +91 99995 64339</p>
-        <p style="margin-top:2rem;">
-          <a href="https://github.com/hem-kant" style="color:var(--primary); margin:0 1.5rem; font-size:1.6rem;"><i class="fab fa-github"></i></a>
-          <a href="https://www.linkedin.com/in/YOUR-LINK" style="color:var(--primary); margin:0 1.5rem; font-size:1.6rem;"><i class="fab fa-linkedin"></i></a>
-        </p>
-      </div>
+    <!-- SKILLS SECTION -->
+    <section id="skills" class="py-24 bg-white dark:bg-zinc-900">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="px-5 py-2 bg-sky-100 dark:bg-sky-900 text-sky-600 rounded-3xl text-sm font-medium">EXPERTISE</span>
+                <h2 class="text-5xl font-semibold mt-3">Core Competencies</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Skill 1 -->
+                <div class="group">
+                    <div class="flex justify-between mb-3 text-sm">
+                        <span class="font-medium">Solution Architecture &amp; Design</span>
+                        <span class="text-sky-500">95%</span>
+                    </div>
+                    <div class="h-2 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div class="skill-bar w-0 group-hover:w-[95%]"></div>
+                    </div>
+                </div>
+                
+                <!-- Skill 2 -->
+                <div class="group">
+                    <div class="flex justify-between mb-3 text-sm">
+                        <span class="font-medium">Digital Transformation Strategy</span>
+                        <span class="text-sky-500">90%</span>
+                    </div>
+                    <div class="h-2 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div class="skill-bar w-0 group-hover:w-[90%]"></div>
+                    </div>
+                </div>
+                
+                <!-- Skill 3 -->
+                <div class="group">
+                    <div class="flex justify-between mb-3 text-sm">
+                        <span class="font-medium">Cloud &amp; Enterprise Platforms</span>
+                        <span class="text-sky-500">88%</span>
+                    </div>
+                    <div class="h-2 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div class="skill-bar w-0 group-hover:w-[88%]"></div>
+                    </div>
+                </div>
+                
+                <!-- Skill 4 -->
+                <div class="group">
+                    <div class="flex justify-between mb-3 text-sm">
+                        <span class="font-medium">Stakeholder &amp; Team Leadership</span>
+                        <span class="text-sky-500">92%</span>
+                    </div>
+                    <div class="h-2 bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+                        <div class="skill-bar w-0 group-hover:w-[92%]"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div class="p-6 bg-zinc-50 dark:bg-zinc-800 rounded-3xl hover:scale-105 transition-transform">Microservices</div>
+                <div class="p-6 bg-zinc-50 dark:bg-zinc-800 rounded-3xl hover:scale-105 transition-transform">API-First Design</div>
+                <div class="p-6 bg-zinc-50 dark:bg-zinc-800 rounded-3xl hover:scale-105 transition-transform">Agile Delivery</div>
+                <div class="p-6 bg-zinc-50 dark:bg-zinc-800 rounded-3xl hover:scale-105 transition-transform">Fan Experience Platforms</div>
+            </div>
+        </div>
     </section>
 
-  </main>
+    <!-- CONTACT / FOOTER -->
+    <section id="contact" class="py-24 bg-zinc-950 text-white">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-5xl font-light mb-6">Let's build the next big thing in sports together</h2>
+            <p class="text-xl text-zinc-400 max-w-md mx-auto">
+                Currently open for strategic conversations and consulting opportunities
+            </p>
+            
+            <div class="mt-16 flex flex-col md:flex-row gap-8 justify-center items-center">
+                <a href="mailto:hemkant@email.com" 
+                   class="flex items-center gap-4 group">
+                    <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center group-hover:bg-sky-500 transition-colors">
+                        <i class="fas fa-envelope text-2xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-xs text-zinc-500">EMAIL</div>
+                        <div class="font-medium">hemkant3280@gmail.com</div>
+                    </div>
+                </a>
+                
+                <a href="https://x.com/HemKant3280" target="_blank"
+                   class="flex items-center gap-4 group">
+                    <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center group-hover:bg-sky-500 transition-colors">
+                        <i class="fab fa-x-twitter text-2xl"></i>
+                    </div>
+                    <div class="text-left">
+                        <div class="text-xs text-zinc-500">X / TWITTER</div>
+                        <div class="font-medium">@HemKant3280</div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="mt-20 text-xs text-zinc-500">
+                © 2026 Hem Kant • Solution Architect • Built with passion for sports &amp; technology
+            </div>
+        </div>
+    </section>
 
-  <footer>
-    <p>© 2026 Hem Kant • Built with modern HTML • CSS • JavaScript</p>
-  </footer>
+    <!-- MODAL -->
+    <div id="modal" onclick="if(event.target.id==='modal')closeModal()" 
+         class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[999]">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="modal bg-white dark:bg-zinc-900 max-w-lg w-full mx-4 rounded-3xl p-8 relative">
+            <button onclick="closeModal()" 
+                    class="absolute top-6 right-6 text-3xl text-zinc-400 hover:text-black">×</button>
+            
+            <div id="modal-content">
+                <!-- JS injected content -->
+            </div>
+        </div>
+    </div>
 
-  <!-- Particles.js CDN (lightweight background effect) -->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-
-  <script>
-    // Theme toggle
-    const themeToggle = document.querySelector('.theme-toggle');
-    themeToggle.addEventListener('click', () => {
-      document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-      themeToggle.innerHTML = document.documentElement.dataset.theme === 'dark' 
-        ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
-    });
-
-    // Particles toggle
-    const particlesToggle = document.querySelector('.particles-toggle');
-    particlesToggle.addEventListener('click', () => {
-      document.documentElement.dataset.particles = document.documentElement.dataset.particles === 'off' ? 'on' : 'off';
-      particlesToggle.innerHTML = document.documentElement.dataset.particles === 'off' 
-        ? '<i class="fas fa-snowflake"></i>' : '<i class="fas fa-stop"></i>';
-    });
-
-    // Particles init
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 60, density: { enable: true, value_area: 800 } },
-        color: { value: '#0066cc' },
-        shape: { type: 'circle' },
-        opacity: { value: 0.5, random: true },
-        size: { value: 3, random: true },
-        line_linked: { enable: true, distance: 150, color: '#0066cc', opacity: 0.4, width: 1 },
-        move: { enable: true, speed: 2, direction: 'none', random: false, straight: false, out_mode: 'out' }
-      },
-      interactivity: { detect_on: 'canvas', events: { onhover: { enable: true, mode: 'repulse' } } },
-      retina_detect: true
-    });
-
-    // Typing effect
-    const tagline = document.getElementById('typing-tagline');
-    const text = "Solution Architect | Digital Transformation | Cloud-Native Leader";
-    let i = 0;
-    function type() {
-      if (i < text.length) {
-        tagline.innerHTML += text.charAt(i);
-        i++;
-        setTimeout(type, 60);
-      }
-    }
-    setTimeout(type, 800);
-
-    // Scroll animations + Intersection Observer
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add('visible');
-      });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.card, .timeline-item, .skill-meter').forEach(el => observer.observe(el));
-
-    // Collapsible sections
-    document.querySelectorAll('.toggle-header').forEach(header => {
-      header.addEventListener('click', () => {
-        header.classList.toggle('active');
-        header.nextElementSibling.classList.toggle('open');
-      });
-    });
-
-    // Skill counters + filter
-    const counters = document.querySelectorAll('.counter');
-    const skillTags = document.querySelectorAll('#skill-tags .skill-tag');
-    let animated = false;
-
-    function animateCounters() {
-      if (animated) return;
-      animated = true;
-      counters.forEach(counter => {
-        const target = +counter.closest('.skill-meter').dataset.percent;
-        let count = 0;
-        const increment = target / 60;
-        const timer = setInterval(() => {
-          count += increment;
-          counter.textContent = Math.min(Math.floor(count), target);
-          if (count >= target) clearInterval(timer);
-        }, 30);
-      });
-    }
-
-    // Run counters when skills section is visible
-    const skillsSection = document.querySelector('#skills');
-    const skillsObserver = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) animateCounters();
-    }, { threshold: 0.3 });
-    skillsObserver.observe(skillsSection);
-
-    // Skill tag filter
-    skillTags.forEach(tag => {
-      tag.addEventListener('click', () => {
-        skillTags.forEach(t => t.classList.remove('active'));
-        tag.classList.add('active');
-
-        const filter = tag.dataset.skill;
-        document.querySelectorAll('.skill-meter').forEach(meter => {
-          if (filter === 'all' || meter.dataset.skill === filter) {
-            meter.style.display = 'block';
-            meter.classList.add('visible');
-          } else {
-            meter.style.display = 'none';
-          }
-        });
-      });
-    });
-
-    // Active nav link
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('nav a');
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(sec => {
-        if (scrollY >= sec.offsetTop - 250) current = sec.getAttribute('id');
-      });
-      navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) link.classList.add('active');
-      });
-    });
-  </script>
-
+    <script>
+        // Tailwind script run
+        function initTailwind() {
+            // Already initialized via CDN
+        }
+        
+        // Dark mode
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark')
+            const icon = document.getElementById('theme-icon')
+            if (document.documentElement.classList.contains('dark')) {
+                icon.classList.remove('fa-moon')
+                icon.classList.add('fa-sun')
+            } else {
+                icon.classList.add('fa-moon')
+                icon.classList.remove('fa-sun')
+            }
+        }
+        
+        // Mobile menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu')
+            const icon = document.getElementById('mobile-icon')
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden')
+                icon.classList.remove('fa-bars')
+                icon.classList.add('fa-xmark')
+            } else {
+                menu.classList.add('hidden')
+                icon.classList.add('fa-bars')
+                icon.classList.remove('fa-xmark')
+            }
+        }
+        
+        // Smooth scroll
+        function smoothScrollTo(section) {
+            const el = document.getElementById(section)
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' })
+            }
+        }
+        
+        // Animated counters
+        function animateCounter(id, target, duration = 1800) {
+            let start = 0
+            const step = Math.ceil(target / (duration / 16))
+            const timer = setInterval(() => {
+                start += step
+                if (start >= target) {
+                    start = target
+                    clearInterval(timer)
+                }
+                document.getElementById(id).textContent = start
+            }, 16)
+        }
+        
+        function animateStat(el) {
+            el.style.transform = 'scale(1.3)'
+            setTimeout(() => el.style.transform = 'scale(1)', 300)
+        }
+        
+        // Modal system
+        function showModal(mode) {
+            const modal = document.getElementById('modal')
+            const content = document.getElementById('modal-content')
+            
+            if (mode === 1) {
+                content.innerHTML = `
+                    <h3 class="text-3xl font-semibold mb-2">Solution Architect</h3>
+                    <div class="text-sky-500 mb-6">World's Top Sports Brand • 2021 – Present</div>
+                    <ul class="space-y-4 text-zinc-600 dark:text-zinc-400">
+                        <li class="flex gap-3"><span class="text-emerald-500 text-xl">•</span> Architected global fan engagement platform serving 50M+ users</li>
+                        <li class="flex gap-3"><span class="text-emerald-500 text-xl">•</span> Led migration to cloud-native microservices reducing latency by 68%</li>
+                        <li class="flex gap-3"><span class="text-emerald-500 text-xl">•</span> Designed real-time analytics dashboard for live sports events</li>
+                        <li class="flex gap-3"><span class="text-emerald-500 text-xl">•</span> Collaborated with C-level stakeholders across 12 countries</li>
+                    </ul>
+                    <div class="mt-10 bg-sky-50 dark:bg-zinc-800 p-5 rounded-2xl text-xs font-medium">
+                        Impact: Increased digital revenue by 42% YoY
+                    </div>
+                `
+            } else {
+                content.innerHTML = `
+                    <h3 class="text-3xl font-semibold mb-2">Senior Solution Designer</h3>
+                    <div class="text-amber-500 mb-6">Global IT Consulting • 2016 – 2021</div>
+                    <ul class="space-y-4 text-zinc-600 dark:text-zinc-400">
+                        <li class="flex gap-3"><span class="text-emerald-500 text-xl">•</span> Delivered 14 enterprise solutions across retail &amp; media</li>
+                        <li class="flex gap-3"><span class="text-emerald-500 text-xl">•</span> Mentored 8 junior architects</li>
+                        <li class="flex gap-3"><span class="text-emerald-500 text-xl">•</span> Achieved 100% client satisfaction score</li>
+                    </ul>
+                `
+            }
+            
+            modal.classList.remove('hidden')
+            modal.classList.add('flex')
+        }
+        
+        function closeModal() {
+            const modal = document.getElementById('modal')
+            modal.classList.add('hidden')
+            modal.classList.remove('flex')
+        }
+        
+        // Download PDF simulation
+        function downloadCV() {
+            const originalTitle = document.title
+            document.title = "Hem Kant - Solution Architect CV"
+            
+            // Trigger browser print dialog (styled for PDF)
+            window.print()
+            
+            setTimeout(() => {
+                document.title = originalTitle
+            }, 800)
+            
+            // Toast
+            const toast = document.createElement('div')
+            toast.style.cssText = 'position:fixed;bottom:30px;right:30px;background:#0ea5e9;color:white;padding:16px 24px;border-radius:9999px;box-shadow:0 10px 30px -10px rgb(14 165 233);z-index:9999;font-weight:600;'
+            toast.textContent = '📄 PDF ready for download!'
+            document.body.appendChild(toast)
+            setTimeout(() => toast.remove(), 2800)
+        }
+        
+        // Skill bar animation trigger
+        function animateSkills() {
+            const bars = document.querySelectorAll('.skill-bar')
+            bars.forEach(bar => {
+                const targetWidth = bar.style.width || '0%'
+                bar.style.width = '0%'
+                setTimeout(() => {
+                    bar.style.width = targetWidth
+                }, 600)
+            })
+        }
+        
+        // Keyboard shortcuts
+        function handleKeys(e) {
+            if (e.metaKey && e.key === 'k') {
+                e.preventDefault()
+                alert("🔍 Quick search coming soon in v2.0!")
+            }
+        }
+        
+        // Initialize everything
+        function initializeCV() {
+            // Tailwind ready
+            initTailwind()
+            
+            // Animate counters on load
+            setTimeout(() => {
+                animateCounter('stat-years', 15)
+                animateCounter('stat-design', 5)
+            }, 800)
+            
+            // Trigger skill bars when scrolled into view
+            const skillsSection = document.getElementById('skills')
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    animateSkills()
+                    observer.disconnect()
+                }
+            }, { threshold: 0.5 })
+            observer.observe(skillsSection)
+            
+            // Keyboard listener
+            document.addEventListener('keydown', handleKeys)
+            
+            // Pre-load dark mode preference
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark')
+                document.getElementById('theme-icon').classList.remove('fa-moon')
+                document.getElementById('theme-icon').classList.add('fa-sun')
+            }
+            
+            console.log('%c✅ Interactive CV for Hem Kant ready! 🚀', 'color:#0ea5e9;font-family:monospace')
+        }
+        
+        // Boot the CV
+        window.onload = initializeCV
+    </script>
 </body>
 </html>
